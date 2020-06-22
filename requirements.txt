@@ -1,0 +1,9 @@
+cairosvg
+coffeehouse
+deezloader
+Google-Images-Search
+google
+gtts
+justwatch
+lottie
+spotdl
