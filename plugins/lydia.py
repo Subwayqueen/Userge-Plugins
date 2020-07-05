@@ -53,7 +53,7 @@ async def _init():
               '-off': "Disable AI on replied user",
               '-list': "List All users",
               '-info': "Get Info about Lydia"},
-    'usage': "{tr}lydia [flag] [reply to user]"})
+    'usage': "{tr}lydia [flag] [reply to user]"}, allow_via_bot=False)
 async def lydia_session(message: Message):
     """ lydia command handler """
     if CH_LYDIA_API is None:
@@ -151,7 +151,8 @@ async def lydia_session(message: Message):
 
 
 @userge.on_filters(
-    ~Filters.me & ~Filters.edited & (Filters.mentioned | Filters.private), group=2)
+    ~Filters.me & ~Filters.edited & (Filters.mentioned | Filters.private),
+    group=2, allow_via_bot=False)
 async def lydia_ai_chat(message: Message):
     """ incomming message handler """
     if CH_LYDIA_API is None:
