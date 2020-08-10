@@ -1,10 +1,16 @@
 cairosvg
 coffeehouse
+colour
 deezloader
+emoji-country-flag
 Google-Images-Search
 google
+glitch-this
 gtts
+humanize
 justwatch
 lottie
-spotdl
 qrcode
+spotdl
+tracemoepy
+validators

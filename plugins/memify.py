@@ -1,5 +1,4 @@
 import os
-import time
 import textwrap
 
 from PIL import Image, ImageFont, ImageDraw
@@ -27,14 +26,11 @@ async def memify(message: Message):
     if not os.path.isdir(Config.DOWN_PATH):
         os.makedirs(Config.DOWN_PATH)
     await message.edit("He he, let me use my skills")
-    c_time = time.time()
     dls = await message.client.download_media(
         message=message.reply_to_message,
         file_name=Config.DOWN_PATH,
         progress=progress,
-        progress_args=(
-            "Trying to Posses given content", userge, message, c_time
-        )
+        progress_args=(message, "Trying to Posses given content")
     )
     dls_loc = os.path.join(Config.DOWN_PATH, os.path.basename(dls))
     if replied.sticker and replied.sticker.file_name.endswith(".tgs"):
@@ -69,7 +65,7 @@ async def draw_meme_text(image_path, text):
     img = Image.open(image_path)
     os.remove(image_path)
     i_width, i_height = img.size
-    m_font = ImageFont.truetype("resources/MutantAcademyBB.ttf", int((70 / 640)*i_width))
+    m_font = ImageFont.truetype("resources/MutantAcademyStyle.ttf", int((70 / 640) * i_width))
     if ";" in text:
         upper_text, lower_text = text.split(";")
     else:

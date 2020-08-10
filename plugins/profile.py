@@ -1,10 +1,9 @@
 """ All Profile Settings for User """
 
 # by krishna
-# del_pfp by phyco-ninja
+# del_pfp by Phyco-Ninja
 
 import os
-import time
 from datetime import datetime
 
 from pyrogram.errors.exceptions.bad_request_400 import (
@@ -112,16 +111,14 @@ async def set_profile_picture(message: Message):
     if (replied and replied.media and (
             replied.photo or (replied.document and "image" in replied.document.mime_type))):
         s_time = datetime.now()
-        c_time = time.time()
 
         await userge.download_media(message=replied,
                                     file_name=PHOTO,
                                     progress=progress,
                                     progress_args=(
-                                        "trying to download and set profile picture",
-                                        userge, message, c_time))
+                                        message, "trying to download and set profile picture"))
 
-        await userge.set_profile_photo(PHOTO)
+        await userge.set_profile_photo(photo=PHOTO)
 
         if os.path.exists(PHOTO):
             os.remove(PHOTO)
@@ -226,11 +223,17 @@ async def del_pfp(message: Message):
             await message.err(v_e)
             return
         await message.edit(f"```Deleting first {del_c} Profile Photos ...```")
+        start = datetime.now()
+        ctr = 0
         async for photo in userge.iter_profile_photos("me", limit=del_c):
             await userge.delete_profile_photos(photo.file_id)
-        else:
-            await message.edit("```What am i supposed to delete nothing !...```")
-            await message.reply_sticker(sticker="CAADAQAD0wAD976IR_CYoqvCwXhyFgQ")
+            ctr += 1
+        end = datetime.now()
+        difff = (end - start).seconds
+        await message.edit(f"Deleted {ctr} Profile Pics in {difff} seconds!")
+    else:
+        await message.edit("```What am i supposed to delete nothing !...```")
+        await message.reply_sticker(sticker="CAADAQAD0wAD976IR_CYoqvCwXhyFgQ")
 
 
 @userge.on_cmd("clone", about={
@@ -303,7 +306,7 @@ async def clone_(message: Message):
             await message.err("```User not have any profile pic ...```", del_in=5)
             return
         await userge.download_media(user.photo.big_file_id, file_name=PHOTO)
-        await userge.set_profile_photo(PHOTO)
+        await userge.set_profile_photo(photo=PHOTO)
         await message.edit("```Profile photo is Successfully Cloned ...```", del_in=3)
     else:
         if USER_DATA or os.path.exists(PHOTO):
@@ -323,7 +326,7 @@ async def clone_(message: Message):
                 "`User not have profile photo, I only cloning Name and bio ...`", del_in=5)
             return
         await userge.download_media(user.photo.big_file_id, file_name=PHOTO)
-        await userge.set_profile_photo(PHOTO)
+        await userge.set_profile_photo(photo=PHOTO)
         await message.edit("```Profile is Successfully Cloned ...```", del_in=3)
 
 
